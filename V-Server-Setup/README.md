@@ -1,5 +1,8 @@
 # V-Server Setup
 
+ This guide provides a step-by-step process to set up a V-Server. It begins with generating SSH key pairs on your local machine and progresses through logging into the server, copying your public key to the server, and disabling password login for  security reasons. Finally, it shows the configuration of your server and the addition of a webserver, including setting up an alternative HTML page served on a different port. 
+
+
 ## Table of Contents
 
 1. [Generating SSH Key Pairs on Local Machine](#1-generating-ssh-key-pairs-on-local-machine)
@@ -19,7 +22,7 @@ ssh-keygen -t ed25519
 
 
 ## 2. Log in on server
-Following command to log in 
+Following command to log in:
 
 ```sh 
 ssh *username*@*123.123.12.12* 
@@ -30,13 +33,13 @@ type in your password.
 ## 3. Copy public key to Server 
 
 ```sh
-ssh-copy-id -i ~/.ssh/*nameofyourey*.pub 
+ssh-copy-id -i ~/.ssh/*nameofyourkey*.pub 
 ```
 
-in general:
+In general:
 
 ```sh
-ssh-copy-id -i *pathtoyourssh*/*nameofyourey*.pub
+ssh-copy-id -i *pathtoyourssh*/*nameofyourkey*.pub
 ```
 
 ### Now you can login with ssh key 
@@ -44,11 +47,13 @@ ssh-copy-id -i *pathtoyourssh*/*nameofyourey*.pub
 ```sh
 ssh -i *~/.ssh/id_rsa* *username*@*123.123.12.12*
 ```
+> [!Warning]
+> Don't skip this part. Before you cannot log in with your ssh key, you should not disable the passwort login (point 4 of this documentation) on your server.
 
 ## 4. Disable password login 
 (On your server)
 
-Edit your ssh config 
+Edit your ssh config: 
 
 ```sh
 sudo nano /etc/ssh/sshd_config
@@ -58,16 +63,16 @@ Turn
 ```sh
     #PasswordAuthentication yes
 ``` 
-to
+... to
 ```sh
     PasswordAuthentication no
 ``` 
 
-save changes and exit 
+...then save changes and exit 
 
 ### Restart ssh service
 
-Run this command
+Run this command:
 ```sh
     sudo systemctl restart ssh.service 
 ``` 
@@ -78,12 +83,15 @@ Test if it works -> open new console und run this command:
     ssh -o PubkeyAuthentication=no *username*@*123.123.12.12*
 ``` 
 
-Resonse should be "Permission denied"
+Resonse should be:
+```sh
+ Permission denied (publickey).
+ ```
 
 
 ## 5. Configure your server & add webserver
 
-log in on your v-server an run this commands: 
+Log in on your v-server an run this commands: 
 
 ```sh
    sudo apt update
@@ -92,17 +100,17 @@ log in on your v-server an run this commands:
 
 ### create alternative html page 
 
-run this command:
+Run this command:
 
 ```sh
 sudo mkdir /var/www/alternatives
 sudo touch /var/www/alternatives/alternate-index.html
 ```
-type in your html code, then write out and exit 
+... then type in your html code, write out and exit the editor.
 
 ### change nginx configuration
 
-run this command, to create new file:
+Run this command, to create new file:
 
 ```sh
 sudo nano /etc/nginx/sites-enabled/alternatives
@@ -124,13 +132,13 @@ server {
 }
 ```
 
-write out and exit, then restart nginx server 
+...then write out, exit and  restart nginx server: 
 
 ````sh
 sudo service nginx restart
 ````
 
-check in your browser this url *youripadress*:8081 
+Check in your browser this url *youripadress*:8081 
 Now you should see you alternate HTML Page.
 
 
