@@ -28,7 +28,7 @@ Following command to log in:
 ssh *username*@*123.123.12.12* 
 ```
 
-type in your password.
+...and type in your password.
 
 ## 3. Copy public key to Server 
 
@@ -59,16 +59,16 @@ Edit your ssh config:
 sudo nano /etc/ssh/sshd_config
 ```
 
-Turn 
+Turn: 
 ```sh
     #PasswordAuthentication yes
 ``` 
-... to
+... to:
 ```sh
     PasswordAuthentication no
 ``` 
 
-...then save changes and exit 
+...then save changes and exit.
 
 ### Restart ssh service
 
@@ -116,7 +116,7 @@ Run this command, to create new file:
 sudo nano /etc/nginx/sites-enabled/alternatives
 ```
 
-write this configuration for PORT 8081:
+Write this configuration for PORT 8081:
 
 ```
 server {
