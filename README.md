@@ -83,7 +83,7 @@ Test if it works -> open new console und run this command:
     ssh -o PubkeyAuthentication=no *username*@*123.123.12.12*
 ``` 
 
-Resonse should be:
+The response should be:
 ```sh
  Permission denied (publickey).
  ```
